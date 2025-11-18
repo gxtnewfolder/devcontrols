@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  key         String    @unique          // "crm", "hrm", "ml-platform"
+  name        String
+  type        String                  // "web-app", "api", "ml-platform", ...
+  description String?
+  repoUrl     String?
+  services    Service[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Service {
+  id          String        @id @default(cuid())
+  project     Project       @relation(fields: [projectId], references: [id])
+  projectId   String
+  key         String        @unique  // "crm-frontend", "crm-backend"
+  name        String
+  repoUrl     String?
+  ciProvider  String        // "github-actions", etc.
+  ciConfig    Json?
+  deployments Deployment[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Environment {
+  id          String        @id @default(cuid())
+  key         String        @unique // "dev", "stg", "prod"
+  name        String
+  description String?
+  deployments Deployment[]
+}
+
+model Deployment {
+  id            String       @id @default(cuid())
+  service       Service      @relation(fields: [serviceId], references: [id])
+  serviceId     String
+  environment   Environment  @relation(fields: [environmentId], references: [id])
+  environmentId String
+  version       String       // git sha / tag / build number
+  status        String       // "pending", "running", "success", "failed"
+  triggeredBy   String
+  logsUrl       String?
+  startedAt     DateTime     @default(now())
+  finishedAt    DateTime?
+}

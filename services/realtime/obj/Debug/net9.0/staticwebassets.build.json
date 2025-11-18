@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "8sufOeziFY5k1bK5hqVxNMBA3Z3yccr6kNlhUHcPoYI=",
+  "Source": "RealtimeService",
+  "BasePath": "_content/RealtimeService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: devcontrol-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  # mlflow:
+  #   image: ghcr.io/mlflow/mlflow:latest
+  #   container_name: devcontrol-mlflow
+  #   ports:
+  #     - "5001:5000"
+  #   environment:
+  #     - MLFLOW_BACKEND_STORE_URI=sqlite:////mlflow/mlflow.db
+  #     - MLFLOW_ARTIFACT_ROOT=/mlflow/artifacts
+  #   volumes:
+  #     - mlflow-data:/mlflow
+
+volumes:
+  redis-data:
+  # mlflow-data:
